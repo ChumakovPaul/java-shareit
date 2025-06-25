@@ -15,7 +15,7 @@ import java.util.List;
 @Repository
 public class UserRepositoryImpl implements UserRepository {
 
-    private static long userCounter = 1;
+    private long userCounter = 1;
     private final HashMap<Long, User> userStorage;
     @Autowired
     private final UserMapper userMapper;
@@ -26,7 +26,7 @@ public class UserRepositoryImpl implements UserRepository {
         User user = userMapper.toUser(userCreateDto);
         emailValidation(user.getEmail());
         user.setId(userCounter);
-        UserRepositoryImpl.userCounter++;
+        userCounter++;
         userStorage.put(user.getId(), user);
         return userMapper.toUserDto(user);
     }

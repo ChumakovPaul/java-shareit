@@ -20,7 +20,7 @@ import java.util.stream.Stream;
 @Data
 @Repository
 public class ItemRepositoryImpl implements ItemRepository {
-    private static long itemCounter = 1;
+    private long itemCounter = 1;
     private final HashMap<Long, Item> itemStorage;
 
     @Autowired
@@ -41,7 +41,7 @@ public class ItemRepositoryImpl implements ItemRepository {
         }
         Item item = itemMapper.toItem(itemCreateDto, user);
         item.setId(itemCounter);
-        ItemRepositoryImpl.itemCounter++;
+        itemCounter++;
         itemStorage.put(item.getId(), item);
         return itemMapper.toItemDto(item);
     }
