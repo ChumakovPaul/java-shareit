@@ -26,7 +26,7 @@ public class UserRepositoryImpl implements UserRepository {
         User user = userMapper.toUser(userCreateDto);
         emailValidation(user.getEmail());
         user.setId(userCounter);
-        userCounter++;
+        UserRepositoryImpl.userCounter++;
         userStorage.put(user.getId(), user);
         return userMapper.toUserDto(user);
     }

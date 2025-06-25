@@ -41,7 +41,7 @@ public class ItemRepositoryImpl implements ItemRepository {
         }
         Item item = itemMapper.toItem(itemCreateDto, user);
         item.setId(itemCounter);
-        itemCounter++;
+        ItemRepositoryImpl.itemCounter++;
         itemStorage.put(item.getId(), item);
         return itemMapper.toItemDto(item);
     }
