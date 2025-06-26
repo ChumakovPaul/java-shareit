@@ -12,9 +12,6 @@ import ru.practicum.shareit.user.dto.UserUpdateDto;
 
 import java.util.List;
 
-/**
- * TODO Sprint add-controllers.
- */
 @Slf4j
 @RestController
 @RequestMapping(path = "/users")
@@ -27,40 +24,40 @@ public class UserController {
 
     @PostMapping
     public UserDto createUser(@Valid @RequestBody UserCreateDto userCreateDto) {
-        log.info("==> Creating user: {}", userCreateDto);
+        log.info("Start creating user: {}", userCreateDto);
         UserDto user = userService.createUser(userCreateDto);
-        log.info("<== Creating user: {}", user);
+        log.info("Finish creating user: {}", user);
         return user;
     }
 
     @PatchMapping("/{userId}")
     public UserDto updateUser(@Valid @RequestBody UserUpdateDto userUpdateDto, @PathVariable Long userId) {
-        log.info("==> Updating user: {}", userUpdateDto);
+        log.info("Start updating user: {}", userUpdateDto);
         UserDto user = userService.updateUser(userUpdateDto, userId);
-        log.info("<== Updating user: {}", user);
+        log.info("Finish updating user: {}", user);
         return user;
     }
 
     @GetMapping("/{userId}")
     public UserDto getUser(@PathVariable Long userId) {
-        log.info("==> Getting user:{}", userId);
+        log.info("Start getting user:{}", userId);
         UserDto user = userService.getUser(userId);
-        log.info("<== Getting user:{}", userId);
+        log.info("Finish getting user:{}", userId);
         return user;
     }
 
     @GetMapping
     public List<UserDto> getAllUsers() {
-        log.info("==> Getting all users");
+        log.info("Start getting all users");
         List<UserDto> users = userService.getAllUsers();
-        log.info("<== Getting all users");
+        log.info("Finish getting all users");
         return users;
     }
 
     @DeleteMapping("/{userId}")
     public void deleteUser(@PathVariable Long userId) {
-        log.info("==> Delete user:{}", userId);
+        log.info("Start delete user:{}", userId);
         userService.deleteUser(userId);
-        log.info("<== Delete user:{}", userId);
+        log.info("Finish delete user:{}", userId);
     }
 }

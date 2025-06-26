@@ -12,10 +12,6 @@ import ru.practicum.shareit.item.dto.ItemUpdateDto;
 
 import java.util.List;
 
-/**
- * TODO Sprint add-controllers.
- */
-
 @Slf4j
 @Validated
 @RequiredArgsConstructor
@@ -28,44 +24,44 @@ public class ItemController {
 
     @PostMapping
     public ItemDto createItem(@RequestHeader("X-Sharer-User-Id") Long ownerId, @Valid @RequestBody ItemCreateDto itemCreateDto) {
-        log.info("==> Creating item: {}", itemCreateDto);
+        log.info("Start creating item: {}", itemCreateDto);
         itemCreateDto.setOwnerId(ownerId);
         ItemDto item = itemService.createItem(itemCreateDto);
-        log.info("<== Creating item: {}", itemCreateDto);
+        log.info("Finish creating item: {}", itemCreateDto);
         return item;
     }
 
     @PatchMapping("/{itemId}")
     public ItemDto updateItem(@RequestHeader("X-Sharer-User-Id") Long ownerId, @PathVariable Long itemId, @Valid @RequestBody ItemUpdateDto itemUpdateDto) {
-        log.info("==> Updating item: {}", itemUpdateDto);
+        log.info("Start updating item: {}", itemUpdateDto);
         itemUpdateDto.setOwnerId(ownerId);
         itemUpdateDto.setId(itemId);
         ItemDto item = itemService.updateItem(itemUpdateDto);
-        log.info("<== Updating item: {}", itemUpdateDto);
+        log.info("Finish updating item: {}", itemUpdateDto);
         return item;
     }
 
     @GetMapping("/{itemId}")
     public ItemDto getItem(@PathVariable Long itemId) {
-        log.info("==> Getting item: {}", itemId);
+        log.info("Start getting item: {}", itemId);
         ItemDto item = itemService.getItem(itemId);
-        log.info("<== Getting item: {}", itemId);
+        log.info("Finish getting item: {}", itemId);
         return item;
     }
 
     @GetMapping
     public List<ItemDto> getUserItems(@RequestHeader("X-Sharer-User-Id") Long ownerId) {
-        log.info("==> Getting user {} items}", ownerId);
+        log.info("Start getting user {} items}", ownerId);
         List<ItemDto> userItems = itemService.getUserItems(ownerId);
-        log.info("<== Getting user {} items}", ownerId);
+        log.info("Finish getting user {} items}", ownerId);
         return userItems;
     }
 
     @GetMapping("/search")
     public List<ItemDto> getSearchItems(@RequestParam("text") String text) {
-        log.info("==> Getting items with words {}}", text);
+        log.info("Start getting items with words {}}", text);
         List<ItemDto> searchItems = itemService.getSearchItems(text);
-        log.info("<== Getting items with words {}}", text);
+        log.info("Finish getting items with words {}}", text);
         return searchItems;
 
     }

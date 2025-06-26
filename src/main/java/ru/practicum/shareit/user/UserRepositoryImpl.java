@@ -1,12 +1,8 @@
 package ru.practicum.shareit.user;
 
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.exception.DataAlreadyExistException;
-import ru.practicum.shareit.user.dto.UserCreateDto;
-import ru.practicum.shareit.user.dto.UserDto;
-import ru.practicum.shareit.user.dto.UserUpdateDto;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,45 +13,41 @@ public class UserRepositoryImpl implements UserRepository {
 
     private long userCounter = 1;
     private final HashMap<Long, User> userStorage;
-    @Autowired
-    private final UserMapper userMapper;
-
 
     @Override
-    public UserDto createUser(UserCreateDto userCreateDto) {
-        User user = userMapper.toUser(userCreateDto);
+    public User createUser(User user) {
         emailValidation(user.getEmail());
         user.setId(userCounter);
         userCounter++;
         userStorage.put(user.getId(), user);
-        return userMapper.toUserDto(user);
+        return user;
     }
 
     @Override
-    public UserDto updateUser(UserUpdateDto userUpdateDto, Long userId) {
+    public User updateUser(User updateUser, Long userId) {
         if (!userStorage.containsKey(userId)) {
             throw new DataAlreadyExistException("Такого пользователя не существует");
         }
         User user = userStorage.get(userId);
-        if (userUpdateDto.getName() != null) {
-            user.setName(userUpdateDto.getName());
+        if (updateUser.getName() != null) {
+            user.setName(updateUser.getName());
         }
-        if (userUpdateDto.getEmail() != null) {
-            emailValidation(userMapper.toUser(userUpdateDto).getEmail());
-            user.setEmail(userUpdateDto.getEmail());
+        if (updateUser.getEmail() != null) {
+            emailValidation(updateUser.getEmail());
+            user.setEmail(updateUser.getEmail());
         }
         userStorage.put(userId, user);
-        return userMapper.toUserDto(user);
+        return user;
     }
 
     @Override
-    public List<UserDto> getAllUsers() {
-        return userStorage.values().stream().map(userMapper::toUserDto).toList();
+    public List<User> getAllUsers() {
+        return userStorage.values().stream().toList();
     }
 
     @Override
-    public UserDto getUser(Long userId) {
-        return userMapper.toUserDto(userStorage.get(userId));
+    public User getUser(Long userId) {
+        return userStorage.get(userId);
     }
 
     @Override

@@ -5,10 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-/**
- * TODO Sprint add-controllers.
- */
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

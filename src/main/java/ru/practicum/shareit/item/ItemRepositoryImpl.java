@@ -1,16 +1,9 @@
 package ru.practicum.shareit.item;
 
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.exception.DataNotFoundException;
-import ru.practicum.shareit.item.dto.ItemCreateDto;
-import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.dto.ItemUpdateDto;
 import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.user.User;
-import ru.practicum.shareit.user.UserMapper;
-import ru.practicum.shareit.user.UserRepository;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,80 +16,59 @@ public class ItemRepositoryImpl implements ItemRepository {
     private long itemCounter = 1;
     private final HashMap<Long, Item> itemStorage;
 
-    @Autowired
-    private final ItemMapper itemMapper;
-    @Autowired
-    private final UserRepository userRepository;
-    @Autowired
-    private final UserMapper userMapper;
-
-
     @Override
-    public ItemDto createItem(ItemCreateDto itemCreateDto) {
-        User user;
-        try {
-            user = userMapper.toUser(userRepository.getUser(itemCreateDto.getOwnerId()));
-        } catch (NullPointerException e) {
-            throw new DataNotFoundException("Такого пользователя нет базе");
-        }
-        Item item = itemMapper.toItem(itemCreateDto, user);
+    public Item createItem(Item item) {
         item.setId(itemCounter);
         itemCounter++;
         itemStorage.put(item.getId(), item);
-        return itemMapper.toItemDto(item);
+        return item;
     }
 
     @Override
-    public ItemDto updateItem(ItemUpdateDto itemUpdateDto) {
-        if (!itemStorage.containsKey(itemUpdateDto.getId())) {
+    public Item updateItem(Item updateItem) {
+        if (!itemStorage.containsKey(updateItem.getId())) {
             throw new DataNotFoundException("Такой вещи нет в базе");
-        } else if (itemStorage.get(itemUpdateDto.getId()).getOwner().getId() != itemUpdateDto.getOwnerId()) {
-            throw new DataNotFoundException("Изменить запись вещи  может только её владелец");
         }
-        Item item = itemStorage.get(itemUpdateDto.getId());
-        if (itemUpdateDto.getName() != null) {
-            item.setName(itemUpdateDto.getName());
+        Item item = itemStorage.get(updateItem.getId());
+        if (updateItem.getName() != null) {
+            item.setName(updateItem.getName());
         }
-        if (itemUpdateDto.getDescription() != null) {
-            item.setDescription(itemUpdateDto.getDescription());
+        if (updateItem.getDescription() != null) {
+            item.setDescription(updateItem.getDescription());
         }
-        if (itemUpdateDto.getAvailable() != null) {
-            item.setAvailable(itemUpdateDto.getAvailable());
+        if (updateItem.getAvailable() != null) {
+            item.setAvailable(updateItem.getAvailable());
         }
-        System.out.println(item);
         itemStorage.put(item.getId(), item);
-        return itemMapper.toItemDto(item);
+        return item;
     }
 
     @Override
-    public ItemDto getItem(Long itemId) {
-        return itemMapper.toItemDto(itemStorage.get(itemId));
+    public Item getItem(Long itemId) {
+        return itemStorage.get(itemId);
     }
 
     @Override
-    public List<ItemDto> getUserItems(Long ownerId) {
+    public List<Item> getUserItems(Long ownerId) {
         return itemStorage.values().stream()
                 .filter(item -> item.getOwner().getId() == ownerId)
-                .map(itemMapper::toItemDto)
                 .toList();
     }
 
     @Override
-    public List<ItemDto> getSearchItems(String text) {
+    public List<Item> getSearchItems(String text) {
         if (text.isBlank()) {
             return List.of();
         }
-        List<ItemDto> nameSearchItems = itemStorage.values()
+        List<Item> nameSearchItems = itemStorage.values()
                 .stream()
                 .filter(item -> item.getName().toLowerCase().contains(text.toLowerCase()))
-                .filter(item -> item.isAvailable())
-                .map(itemMapper::toItemDto)
+                .filter(item -> item.getAvailable())
                 .toList();
-        List<ItemDto> descriptionSearchItems = itemStorage.values()
+        List<Item> descriptionSearchItems = itemStorage.values()
                 .stream()
                 .filter(item -> item.getDescription().toLowerCase().contains(text.toLowerCase()))
-                .filter(item -> item.isAvailable())
-                .map(itemMapper::toItemDto)
+                .filter(item -> item.getAvailable())
                 .toList();
         return Stream.concat(nameSearchItems.stream(), descriptionSearchItems.stream())
                 .distinct()

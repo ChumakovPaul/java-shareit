@@ -7,10 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
-/**
- * TODO Sprint add-controllers.
- */
-
 @Data
 @Builder
 @AllArgsConstructor

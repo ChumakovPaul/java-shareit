@@ -15,25 +15,27 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private final UserRepository userRepository;
+    @Autowired
+    private final UserMapper userMapper;
 
     @Override
     public UserDto createUser(UserCreateDto userCreateDto) {
-        return userRepository.createUser(userCreateDto);
+        return userMapper.toUserDto(userRepository.createUser(userMapper.toUser(userCreateDto)));
     }
 
     @Override
     public UserDto updateUser(UserUpdateDto userUpdateDto, Long userId) {
-        return userRepository.updateUser(userUpdateDto, userId);
+        return userMapper.toUserDto(userRepository.updateUser(userMapper.toUser(userUpdateDto), userId));
     }
 
     @Override
     public List<UserDto> getAllUsers() {
-        return userRepository.getAllUsers();
+        return userRepository.getAllUsers().stream().map(userMapper::toUserDto).toList();
     }
 
     @Override
     public UserDto getUser(Long userId) {
-        return userRepository.getUser(userId);
+        return userMapper.toUserDto(userRepository.getUser(userId));
     }
 
     @Override
