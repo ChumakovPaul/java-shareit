@@ -81,8 +81,8 @@ public class BookingServiceImpl implements BookingService {
         if (itemRepository.findByOwnerId(ownerId).isEmpty()) {
             throw new DataNotFoundException("У этого пользователя нет вещей");
         }
-        List<Booking> bookingList = bookingRepository.findByItemOwnerId(ownerId).
-                stream()
+        List<Booking> bookingList = bookingRepository.findByItemOwnerId(ownerId)
+                .stream()
                 .sorted(Comparator
                         .comparing(Booking::getStart)
                         .reversed())

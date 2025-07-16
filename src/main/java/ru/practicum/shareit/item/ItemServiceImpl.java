@@ -132,8 +132,8 @@ public class ItemServiceImpl implements ItemService {
     public ItemInfoDto prepareItemInfo(Item item, List<Booking> bookingList) {
         Optional<Booking> latestBooking = bookingList
                 .stream()
-                .filter(b -> b.getItem().getId() == item.getId()).
-                sorted(Comparator
+                .filter(b -> b.getItem().getId() == item.getId())
+                .sorted(Comparator
                         .comparing(Booking::getEnd)
                         .reversed())
                 .filter(b -> b.getEnd().isBefore(LocalDateTime.now()))
