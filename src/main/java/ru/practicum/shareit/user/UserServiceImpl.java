@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getUser(Long userId) {
         return userMapper.toUserDto(userRepository.findById(userId)
-                .orElseThrow(()-> new DataNotFoundException("Такого пользователя не существует.")));
+                .orElseThrow(() -> new DataNotFoundException("Такого пользователя не существует.")));
     }
 
     @Override

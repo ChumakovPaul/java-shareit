@@ -47,17 +47,17 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto save(ItemCreateDto itemCreateDto) {
-        User user = userRepository.findById(itemCreateDto.getOwnerId()).
-                orElseThrow(() -> new DataNotFoundException("Такого пользователя нет в базе"));
+        User user = userRepository.findById(itemCreateDto.getOwnerId())
+                        .orElseThrow(() -> new DataNotFoundException("Такого пользователя нет в базе"));
         return itemMapper.toItemDto(itemRepository.save(itemMapper.toItem(itemCreateDto, user)));
     }
 
     @Override
     public ItemDto updateItem(ItemUpdateDto itemUpdateDto) {
-        User user = userRepository.findById(itemUpdateDto.getOwnerId()).
-                orElseThrow(() -> new DataNotFoundException("Такого пользователя нет в базе"));
-        Item item = itemRepository.findById(itemUpdateDto.getId()).
-                orElseThrow(() -> new DataNotFoundException("Такой вещи нет в базе"));
+        User user = userRepository.findById(itemUpdateDto.getOwnerId())
+                .orElseThrow(() -> new DataNotFoundException("Такого пользователя нет в базе"));
+        Item item = itemRepository.findById(itemUpdateDto.getId())
+                .orElseThrow(() -> new DataNotFoundException("Такой вещи нет в базе"));
         if (item.getOwner().getId() != itemUpdateDto.getOwnerId()) {
             throw new DataNotFoundException("Изменить запись вещи  может только её владелец");
         }
@@ -75,8 +75,8 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemInfoDto getItem(Long itemId, Long userId) {
-        Item item = itemRepository.findById(itemId).
-                orElseThrow(() -> new DataNotFoundException("Такой вещи нет в базе"));
+        Item item = itemRepository.findById(itemId)
+                .orElseThrow(() -> new DataNotFoundException("Такой вещи нет в базе"));
         List<Booking> bookingList = bookingRepository.findByItemId(itemId);
         ItemInfoDto itemInfoDto = prepareItemInfo(item, bookingList);
         if (item.getOwner().getId() != userId) {
@@ -88,8 +88,8 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemInfoDto> getUserItems(Long ownerId) {
-        User user = userRepository.findById(ownerId).
-                orElseThrow(() -> new DataNotFoundException("Такого пользователя нет в базе"));
+        User user = userRepository.findById(ownerId)
+                .orElseThrow(() -> new DataNotFoundException("Такого пользователя нет в базе"));
         List<Item> itemList = itemRepository.findByOwnerId(ownerId);
         List<Booking> bookingList = bookingRepository.findByItemOwnerId(ownerId);
         List<ItemInfoDto> itemInfoDtoList = new ArrayList<>();
@@ -109,46 +109,46 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public CommentDto saveComment(CommentCreateDto commentCreateDto) {
-        List<Booking> booking = bookingRepository.
-                findByItemIdAndBookerId(commentCreateDto.getItemId(), commentCreateDto.getAuthorId()).
-                stream().
-                sorted(Comparator.
-                        comparing(Booking::getEnd).
-                        reversed()).
-                filter(b -> b.getEnd().isBefore(LocalDateTime.now())).
-                toList();
+        List<Booking> booking = bookingRepository
+                .findByItemIdAndBookerId(commentCreateDto.getItemId(), commentCreateDto.getAuthorId())
+                .stream()
+                .sorted(Comparator
+                        .comparing(Booking::getEnd)
+                        .reversed())
+                .filter(b -> b.getEnd().isBefore(LocalDateTime.now()))
+                .toList();
         if (booking.isEmpty()) {
             throw new DataIsNotAvailableException("У данного пользователя нет завершенных бронирований этой вещи");
         }
-        User user = userRepository.findById(commentCreateDto.getAuthorId()).
-                orElseThrow(() -> new DataNotFoundException("Такого пользователя нет в базе"));
-        Item item = itemRepository.findById(commentCreateDto.getItemId()).
-                orElseThrow(() -> new DataNotFoundException("Такой вещи нет в базе"));
+        User user = userRepository.findById(commentCreateDto.getAuthorId())
+                .orElseThrow(() -> new DataNotFoundException("Такого пользователя нет в базе"));
+        Item item = itemRepository.findById(commentCreateDto.getItemId())
+                .orElseThrow(() -> new DataNotFoundException("Такой вещи нет в базе"));
         Comment comment = commentMapper.toComment(commentCreateDto, user, item);
         comment.setCreated(LocalDateTime.now());
         return commentMapper.toCommentDto(commentRepository.save(comment));
     }
 
     public ItemInfoDto prepareItemInfo(Item item, List<Booking> bookingList) {
-        Optional<Booking> latestBooking = bookingList.
-                stream().
-                filter(b -> b.getItem().getId() == item.getId()).
-                sorted(Comparator.
-                        comparing(Booking::getEnd).
-                        reversed()).
-                filter(b -> b.getEnd().isBefore(LocalDateTime.now())).
-                findFirst();
-        Optional<Booking> closestBooking = bookingList.
-                stream().
-                filter(b -> b.getItem().getId() == item.getId()).
-                sorted(Comparator.
-                        comparing(Booking::getStart)).
-                filter(b -> b.getStart().isAfter(LocalDateTime.now())).
-                findFirst();
-        List<CommentDto> comments = commentRepository.findByItemId(item.getId()).
-                stream().
-                map(commentMapper::toCommentDto).
-                toList();
+        Optional<Booking> latestBooking = bookingList
+                .stream()
+                .filter(b -> b.getItem().getId() == item.getId()).
+                sorted(Comparator
+                        .comparing(Booking::getEnd)
+                        .reversed())
+                .filter(b -> b.getEnd().isBefore(LocalDateTime.now()))
+                .findFirst();
+        Optional<Booking> closestBooking = bookingList
+                .stream()
+                .filter(b -> b.getItem().getId() == item.getId())
+                .sorted(Comparator
+                        .comparing(Booking::getStart))
+                .filter(b -> b.getStart().isAfter(LocalDateTime.now()))
+                .findFirst();
+        List<CommentDto> comments = commentRepository.findByItemId(item.getId())
+                .stream()
+                .map(commentMapper::toCommentDto)
+                .toList();
         return itemMapper.toItemForInfoDto(item,
                 latestBooking.orElse(new Booking()),
                 closestBooking.orElse(new Booking()),

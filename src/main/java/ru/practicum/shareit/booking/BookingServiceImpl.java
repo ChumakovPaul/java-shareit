@@ -18,7 +18,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class BookingServiceImpl implements BookingService{
+public class BookingServiceImpl implements BookingService {
 
     @Autowired
     private final BookingRepository bookingRepository;
@@ -39,7 +39,7 @@ public class BookingServiceImpl implements BookingService{
         if (!item.getAvailable()) {
             throw new DataIsNotAvailableException("Данная вещь недоступна");
         }
-        Booking booking = bookingMapper.toBooking(bookingCreateDto,item,booker);
+        Booking booking = bookingMapper.toBooking(bookingCreateDto, item, booker);
         booking.setStatus(Status.WAITING);
         return bookingMapper.toBookingDto(bookingRepository.save(booking));
     }
@@ -67,12 +67,12 @@ public class BookingServiceImpl implements BookingService{
 
     @Override
     public List<BookingDto> findUserBookings(Long bookerId, State state) {
-        List<Booking> bookingList = bookingRepository.findByBookerId(bookerId).
-                stream().
-                sorted(Comparator.
-                        comparing(Booking::getStart).
-                        reversed()).
-                toList();
+        List<Booking> bookingList = bookingRepository.findByBookerId(bookerId)
+                .stream()
+                .sorted(Comparator
+                        .comparing(Booking::getStart)
+                        .reversed())
+                .toList();
         return stateFilter(bookingList, state).stream().map(bookingMapper::toBookingDto).toList();
     }
 
@@ -82,36 +82,36 @@ public class BookingServiceImpl implements BookingService{
             throw new DataNotFoundException("У этого пользователя нет вещей");
         }
         List<Booking> bookingList = bookingRepository.findByItemOwnerId(ownerId).
-                stream().
-                sorted(Comparator.
-                        comparing(Booking::getStart).
-                        reversed()).
-                toList();
+                stream()
+                .sorted(Comparator
+                        .comparing(Booking::getStart)
+                        .reversed())
+                .toList();
         return stateFilter(bookingList, state).stream().map(bookingMapper::toBookingDto).toList();
     }
 
     public List<Booking> stateFilter(List<Booking> bookingList, State state) {
         switch (state) {
-            case State.CURRENT -> bookingList = bookingList.
-                    stream()
+            case State.CURRENT -> bookingList = bookingList
+                    .stream()
                     .filter(b -> b.getStart().isBefore(LocalDateTime.now()))
                     .filter(b -> b.getEnd().isAfter(LocalDateTime.now()))
                     .toList();
-            case State.PAST -> bookingList = bookingList.
-                    stream()
-                    .filter(b->b.getEnd().isBefore(LocalDateTime.now()))
+            case State.PAST -> bookingList = bookingList
+                    .stream()
+                    .filter(b -> b.getEnd().isBefore(LocalDateTime.now()))
                     .toList();
-            case State.FUTURE -> bookingList = bookingList.
-                    stream()
-                    .filter(b->b.getStart().isAfter(LocalDateTime.now()))
+            case State.FUTURE -> bookingList = bookingList
+                    .stream()
+                    .filter(b -> b.getStart().isAfter(LocalDateTime.now()))
                     .toList();
-            case State.WAITING -> bookingList = bookingList.
-                    stream()
-                    .filter(b->b.getStatus().equals(Status.WAITING))
+            case State.WAITING -> bookingList = bookingList
+                    .stream()
+                    .filter(b -> b.getStatus().equals(Status.WAITING))
                     .toList();
-            case State.REJECTED -> bookingList = bookingList.
-                    stream()
-                    .filter(b->b.getStatus().equals(Status.REJECTED))
+            case State.REJECTED -> bookingList = bookingList
+                    .stream()
+                    .filter(b -> b.getStatus().equals(Status.REJECTED))
                     .toList();
         }
         return bookingList;

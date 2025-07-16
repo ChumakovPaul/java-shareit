@@ -1,6 +1,5 @@
 package ru.practicum.shareit.booking.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,6 +20,5 @@ public class BookingDto {
     private LocalDateTime end;
     private ItemBookingDto item;
     private UserBookerDto booker;
-//    private long bookerId;
     private Status status;
 }
