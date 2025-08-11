@@ -17,8 +17,4 @@ public class BookingCreateDto {
     private LocalDateTime start;
     private LocalDateTime end;
     private Long bookerId;
-
-//    boolean isStartBeforeEnd() {
-//        return start.isBefore(end);
-//    }
 }

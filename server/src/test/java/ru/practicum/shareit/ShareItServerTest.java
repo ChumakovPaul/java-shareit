@@ -12,6 +12,6 @@ class ShareItServerTest {
 
     @Test
     void testMainMethod() {
-        ShareItServer.main(new String[] {});
+        ShareItServer.main(new String[]{});
     }
 }

@@ -118,5 +118,4 @@ public class UserControllerTest {
                         .content(mapper.writeValueAsString(userDto)))
                 .andExpect(status().isNotFound());
     }
-
 }

@@ -54,7 +54,6 @@ public class ItemClient extends BaseClient {
     }
 
     public ResponseEntity<Object> createComment(CommentCreateDto commentCreateDto) {
-        System.out.println(commentCreateDto);
         return post("/" + commentCreateDto.getItemId() + "/comment",
                 commentCreateDto.getAuthorId(),
                 commentCreateDto);

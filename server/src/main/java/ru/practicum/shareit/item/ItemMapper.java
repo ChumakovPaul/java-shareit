@@ -29,15 +29,6 @@ public class ItemMapper {
         return item;
     }
 
-//    public Item toItem(ItemUpdateDto itemUpdateDto) {
-//        Item item = new Item();
-//        item.setId(itemUpdateDto.getId());
-//        item.setName(itemUpdateDto.getName());
-//        item.setDescription(itemUpdateDto.getDescription());
-//        item.setAvailable(itemUpdateDto.getAvailable());
-//        return item;
-//    }
-
     public ItemDto toItemDto(Item item) {
         return new ItemDto(
                 item.getId(),

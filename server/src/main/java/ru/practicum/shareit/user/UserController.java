@@ -59,6 +59,4 @@ public class UserController {
         userService.deleteUser(userId);
         log.info("Finish delete user:{}", userId);
     }
-
-
 }

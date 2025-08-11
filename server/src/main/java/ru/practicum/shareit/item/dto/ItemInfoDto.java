@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class    ItemInfoDto {
+public class ItemInfoDto {
     private long id;
     private String name;
     private String description;

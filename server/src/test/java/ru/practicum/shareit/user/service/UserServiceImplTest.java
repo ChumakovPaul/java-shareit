@@ -32,7 +32,6 @@ public class UserServiceImplTest {
 
     private UserCreateDto userCreateDto;
     private UserUpdateDto userUpdateDto;
-//    private UserDto userDto;
 
     @BeforeEach
     void setUp() {
@@ -85,10 +84,4 @@ public class UserServiceImplTest {
     void getNotExistentUser() {
         assertThrows(DataNotFoundException.class, () -> userService.getUser(2L));
     }
-
-//    @Test
-//    void deleteUserNotFound() {
-//        assertThrows(DataNotFoundException.class, () -> userService.deleteUser(2L));
-//    }
-
 }

@@ -43,8 +43,6 @@ public class ItemControllerTest {
     private ItemDto updatedDto;
     private CommentCreateDto commentCreateDto;
     private CommentDto commentDto;
-//    private CommentRequestDto commentRequestDto;
-//    private CommentDto commentDto;
 
     @BeforeEach
     void setUp() {
@@ -53,10 +51,8 @@ public class ItemControllerTest {
         itemUpdateDto = new ItemUpdateDto(1L, 1L, "Test item update", "Update Descroption", false, null);
         updatedDto = new ItemDto(1L, "Test item update", "Update Description", false);
         itemInfoDto = new ItemInfoDto(1L, "Test Item", "Description", false, null, null, null);
-        commentCreateDto = new CommentCreateDto("Test comment",1L,1L);
+        commentCreateDto = new CommentCreateDto("Test comment", 1L, 1L);
         commentDto = new CommentDto(1L, "Test comment", "Test User", null);
-//        commentRequestDto = new CommentRequestDto("Great item!");
-//        commentDto = new CommentDto(1L, "Great item!", "User", null);
     }
 
     @Test

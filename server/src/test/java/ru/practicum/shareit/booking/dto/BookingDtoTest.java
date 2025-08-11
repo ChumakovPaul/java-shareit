@@ -20,7 +20,11 @@ class BookingDtoTest {
 
     @Test
     void testSerialize() throws Exception {
-        BookingDto bookingDto = new BookingDto(1L, LocalDateTime.now(), LocalDateTime.now().plusDays(1), new ItemBookingDto(), new UserBookerDto(), Status.WAITING);
+        BookingDto bookingDto = new BookingDto(1L,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(1),
+                new ItemBookingDto(), new UserBookerDto(),
+                Status.WAITING);
         String json = objectMapper.writeValueAsString(bookingDto);
         assertThat(json).contains("\"id\":1", "\"status\":\"WAITING\"");
     }

@@ -95,25 +95,25 @@ public class BookingServiceImplTest {
     void saveBookingForNotAvailableItem() {
         item.setAvailable(false);
         itemRepository.save(item);
-        assertThrows(DataIsNotAvailableException.class,() -> bookingService.save(bookingCreateDto));
+        assertThrows(DataIsNotAvailableException.class, () -> bookingService.save(bookingCreateDto));
     }
 
     @Test
     void wrongItemOwnerBookingDecision() {
         BookingDto bookingDto = bookingService.save(bookingCreateDto);
-        assertThrows(DataIsNotAvailableException.class,() -> bookingService.itemOwnerBookingDecision(booker.getId(), true, bookingDto.getId()));
+        assertThrows(DataIsNotAvailableException.class, () -> bookingService.itemOwnerBookingDecision(booker.getId(), true, bookingDto.getId()));
     }
 
     @Test
     void findByIdWithWrongUser() {
         BookingDto bookingDto = bookingService.save(bookingCreateDto);
-       assertNull(bookingService.findById(999L, bookingDto.getId()));
+        assertNull(bookingService.findById(999L, bookingDto.getId()));
     }
 
     @Test
     void findOwnerItemsBookingsEmptyList() {
         bookingService.save(bookingCreateDto);
-        assertThrows(DataNotFoundException.class,() -> bookingService.findOwnerItemsBookings(999L, State.ALL));
+        assertThrows(DataNotFoundException.class, () -> bookingService.findOwnerItemsBookings(999L, State.ALL));
     }
 
     @Test

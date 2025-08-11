@@ -141,8 +141,6 @@ public class ItemServiceImplTest {
         bookingRepository.save(booking);
         CommentCreateDto commentCreateDto = new CommentCreateDto("Test comment", createdItem.getId(), 999L);
 
-        assertThrows(DataIsNotAvailableException.class,() -> itemService.saveComment(commentCreateDto));
+        assertThrows(DataIsNotAvailableException.class, () -> itemService.saveComment(commentCreateDto));
     }
-
-
 }

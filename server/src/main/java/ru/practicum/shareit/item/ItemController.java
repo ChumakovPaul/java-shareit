@@ -79,6 +79,4 @@ public class ItemController {
         log.info("Start creating comment {}}", commentCreateDto);
         return itemService.saveComment(commentCreateDto);
     }
-
-
 }

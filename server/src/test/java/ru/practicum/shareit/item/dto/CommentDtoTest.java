@@ -2,8 +2,8 @@ package ru.practicum.shareit.item.dto;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.json.JsonTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.json.JsonTest;
 import ru.practicum.shareit.item.comment.CommentDto;
 
 import java.time.LocalDateTime;
