@@ -27,7 +27,7 @@ public class BookingController {
         bookingCreateDto.setBookerId(bookerId);
         log.info("start create booking {}", bookingCreateDto);
         BookingDto booking = bookingService.save(bookingCreateDto);
-        log.info("start create booking {}", booking);
+        log.info("Booking {} created", booking);
         return booking;
     }
 
@@ -35,12 +35,14 @@ public class BookingController {
     public BookingDto itemOwnerBookingDecision(@RequestHeader("X-Sharer-User-Id") Long ownerId,
                                                @RequestParam(value = "approved") Boolean approved,
                                                @PathVariable Long bookingId) {
+        log.info("start approving item booking {}", bookingId);
         return bookingService.itemOwnerBookingDecision(ownerId, approved, bookingId);
     }
 
     @GetMapping("/{bookingId}")
     public BookingDto findBookingById(@RequestHeader("X-Sharer-User-Id") Long userId,
                                       @PathVariable Long bookingId) {
+        log.info("Getting item booking {}", bookingId);
         return bookingService.findById(userId, bookingId);
     }
 
@@ -49,6 +51,7 @@ public class BookingController {
                                              @RequestParam(value = "state",
                                                      required = false,
                                                      defaultValue = "ALL") String state) {
+        log.info("Getting user {} item bookings", bookerId);
         return bookingService.findUserBookings(bookerId, State.valueOf(state));
     }
 
@@ -57,6 +60,7 @@ public class BookingController {
                                                    @RequestParam(value = "state",
                                                            required = false,
                                                            defaultValue = "ALL") String state) {
+        log.info("Getting item owner {} bookings", ownerId);
         return bookingService.findOwnerItemsBookings(ownerId, State.valueOf(state));
     }
 }

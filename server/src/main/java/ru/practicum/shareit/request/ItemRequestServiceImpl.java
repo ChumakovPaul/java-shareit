@@ -80,7 +80,6 @@ public class ItemRequestServiceImpl implements ItemRequestService {
                 .stream()
                 .map(itemMapper::toItemDto)
                 .toList();
-        System.out.println(items.size());
         itemRequestDto.setItems(items);
         return itemRequestDto;
     }

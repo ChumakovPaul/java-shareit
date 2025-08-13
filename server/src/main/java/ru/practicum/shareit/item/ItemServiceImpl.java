@@ -79,7 +79,8 @@ public class ItemServiceImpl implements ItemService {
             item.setAvailable(itemUpdateDto.getAvailable());
         }
         if (itemUpdateDto.getItemRequestId() != null) {
-            item.setRequest(itemRequestRepository.findById(itemUpdateDto.getItemRequestId()).get());
+            itemRequestRepository.findById(itemUpdateDto.getItemRequestId())
+                    .orElseThrow(() -> new DataNotFoundException("Такого запроса на вещь нет в базе"));
         }
         return itemMapper.toItemDto(itemRepository.save(item));
     }
