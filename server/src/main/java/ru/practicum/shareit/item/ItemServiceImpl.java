@@ -54,9 +54,9 @@ public class ItemServiceImpl implements ItemService {
                 .orElseThrow(() -> new DataNotFoundException("Такого пользователя нет в базе"));
         Item item = itemMapper.toItem(itemCreateDto, user);
         if (itemCreateDto.getRequestId() != null) {
-            item.setRequest(itemRequestRepository.findById(itemCreateDto.getRequestId()).get());
+            item.setRequest(itemRequestRepository.findById(itemCreateDto.getRequestId())
+                    .orElseThrow(() -> new DataNotFoundException("Такого запроса на вещь нет в базе")));
         }
-
         return itemMapper.toItemDto(itemRepository.save(item));
     }
 
